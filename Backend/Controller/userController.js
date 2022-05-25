@@ -72,14 +72,15 @@ const userLogin = asyncHandler(async (req, res) => {
 });
 
 const userData = asyncHandler(async (req, res) => {
-  const { name, email } = req.user;
+  const { _id, name, email } = req.user;
 
-  if (!name || !email) {
+  if ((!_id, !name || !email)) {
     res.status(400);
     throw new Error("Invalid Credentials");
   }
 
   res.status(201).json({
+    id: _id,
     name: name,
     email: email,
   });
