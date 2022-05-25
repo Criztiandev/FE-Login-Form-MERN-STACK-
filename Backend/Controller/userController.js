@@ -72,8 +72,11 @@ const userLogin = asyncHandler(async (req, res) => {
 });
 
 const userData = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    message: "Your Data",
+  const { name, email } = req.user;
+
+  res.status(201).json({
+    name: name,
+    email: email,
   });
 });
 
