@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const userModel = require("../Model/userModel");
+const generateToken = require("../Middleware/generateToken");
 
 const userRegister = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -34,6 +35,7 @@ const userRegister = asyncHandler(async (req, res) => {
       _id: registeredUser.id,
       name: registeredUser.name,
       email: registeredUser.email,
+      token: generateToken(registeredUser._id),
     });
   } else {
     res.status(400);
@@ -61,6 +63,7 @@ const userLogin = asyncHandler(async (req, res) => {
       _id: registeredUser.id,
       name: registeredUser.name,
       email: registeredUser.email,
+      token: generateToken(registeredUser._id),
     });
   } else {
     res.status(400);
