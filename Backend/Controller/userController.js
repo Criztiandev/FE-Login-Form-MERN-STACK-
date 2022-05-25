@@ -42,9 +42,30 @@ const userRegister = asyncHandler(async (req, res) => {
 });
 
 const userLogin = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    message: "Your Login",
-  });
+  const { email, password } = req.body;
+
+  //Check input field
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("Please Fill the Input Field");
+  }
+
+  //Check user if it exist
+  const registeredUser = await userModel.findOne({ email });
+
+  if (
+    registeredUser &&
+    (await bcrypt.compare(password, registeredUser.password))
+  ) {
+    res.status(201).json({
+      _id: registeredUser.id,
+      name: registeredUser.name,
+      email: registeredUser.email,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid Creadentials");
+  }
 });
 
 const userData = asyncHandler(async (req, res) => {
